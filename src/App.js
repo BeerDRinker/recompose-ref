@@ -14,32 +14,32 @@ const state = {
 };
 
 const stateHandlers = {
-	handleTouchStart: value => () => ({
-		value: value + 1
+	handleTouchStart: state => () => ({
+			value: state.value + 1
 	}),
-	handleTouchEnd: value => () => ({
-		value: value - 1
+	handleTouchEnd: state => () => ({
+			value: state.value - 1
 	})
 };
 
 export const enhance = compose(
 	setDisplayName("App"),
 	withProps(props => ({
-		bookNode: React.createRef()
+			bookNode: React.createRef()
 	})),
 	withStateHandlers(state, stateHandlers),
 	lifecycle({
-		componentDidMount() {
-			this.bookNode.current.ontouchstart = this.handleTouchStart;
-			this.bookNode.current.ontouchend = this.handleTouchEnd;
-		}
+			componentDidMount() {
+					this.props.bookNode.current.ontouchstart = this.props.handleTouchStart;
+					this.props.bookNode.current.ontouchend = this.props.handleTouchEnd;
+			}
 	})
 );
 
 export const App = ({ value, bookNode }) => (
 	<div>
-		<h3>Value: {value}</h3>
-		<button ref={bookNode}>Submit</button>
+			<h3>Value: {value}</h3>
+			<button ref={bookNode}>Submit</button>
 	</div>
 );
 
